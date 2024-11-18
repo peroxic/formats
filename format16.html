@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Intelligence Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary: #120458;
@@ -176,6 +177,17 @@
             text-align: center;
         }
 
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            font-size: 1.5rem;
+            color: var(--text);
+        }
+
         @media print {
             body {
                 background: white;
@@ -337,6 +349,11 @@
                         <li>@john_doe</li>
                         <li>@doe_john</li>
                     </ul>
+                    <div class="social-icons">
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-linkedin"></i>
+                    </div>
                 </div>
                 <div class="insight-card">
                     <h3>Breached Information</h3>
