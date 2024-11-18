@@ -199,7 +199,8 @@
                 </div>
                 <div>
                     <p>Classification: Restricted</p>
-                    <p>Generated: 2024-11-15 19:25 UTC</p>
+                    <p>Generated: <span id="reportDate"></span></p>
+                    <p>Hash: <span id="reportHash"></span></p>
                 </div>
             </div>
         </div>
@@ -351,8 +352,25 @@
         <div class="verification-seal">
             <p>Digital Verification Seal</p>
             <p>Report ID: DEA-2024-11-15-0047</p>
-            <p>Validation Hash: 847AFC3E912D</p>
+            <p>Validation Hash: <span id="validationHash"></span></p>
         </div>
     </div>
+
+    <script>
+        // Set current date
+        document.getElementById('reportDate').textContent = new Date().toLocaleDateString();
+
+        // Generate unique report hash
+        function generateReportHash() {
+            return Array.from(crypto.getRandomValues(new Uint8Array(8)))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('')
+                .toUpperCase();
+        }
+
+        // Set report hash
+        document.getElementById('reportHash').textContent = generateReportHash();
+        document.getElementById('validationHash').textContent = generateReportHash();
+    </script>
 </body>
 </html>
