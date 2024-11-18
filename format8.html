@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Intelligence Brief</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap">
+    <style>
+        :root {
+            --primary: #1E0B36;
+            --secondary: #2D0A4E;
+            --accent: #8A2BE2;
+            --highlight: #B666FF;
+            --dark-bg: #060412;
+            --darker-bg: #030208;
+            --card-bg: rgba(30, 11, 54, 0.25);
+            --text: #F8F8FF;
+            --muted: #A8A8C0;
+            --border: rgba(138, 43, 226, 0.2);
+            --glass: rgba(30, 11, 54, 0.35);
+            --gradient: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intel-header {
+            background: var(--darker-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .intel-title {
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-info {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .live-timestamp {
+            color: var(--highlight);
+            font-weight: 500;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .insight-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .risk-level {
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--glass);
+            color: var(--highlight);
+            font-weight: 500;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .exposure-panel {
+            background: var(--darker-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .exposure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .exposure-metric {
+            background: var(--glass);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--highlight);
+            margin: 0.5rem 0;
+        }
+
+        .severity-critical { color: #FF3E8E; }
+        .severity-high { color: #FF8F6B; }
+        .severity-medium { color: #FFB800; }
+        .severity-low { color: #00C896; }
+
+        .intel-source {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .report-footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intel-header">
+            <div class="header-grid">
+                <div>
+                    <h1 class="intel-title">Digital Intelligence Brief</h1>
+                    <p class="meta-info">
+                        Analyst: <span id="analyst">peroxic</span> | 
+                        Case ID: <span id="caseId"></span>
+                    </p>
+                    <p class="meta-info">
+                        Generated: <span id="timestamp" class="live-timestamp"></span>
+                    </p>
+                </div>
+                <div class="risk-indicator">
+                    <div>
+                        <div class="risk-level">9.2</div>
+                        <div class="meta-info">Risk Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-grid">
+            <div class="insight-card">
+                <h2>Exposure Summary</h2>
+                <div class="exposure-grid">
+                    <div>
+                        <h3>Breached Accounts</h3>
+                        <div class="metric-value">7</div>
+                        <p class="intel-source">Verified across multiple sources</p>
+                    </div>
+                    <div>
+                        <h3>Data Points</h3>
+                        <div class="metric-value">324</div>
+                        <p class="intel-source">Total exposed elements</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <h2>Threat Assessment</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Severity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Credentials</td>
+                            <td>Exposed</td>
+                            <td class="severity-critical">Critical</td>
+                        </tr>
+                        <tr>
+                            <td>Financial Data</td>
+                            <td>Partial</td>
+                            <td class="severity-high">High</td>
+                        </tr>
+                        <tr>
+                            <td>Personal Info</td>
+                            <td>Verified</td>
+                            <td class="severity-medium">Medium</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="exposure-panel">
+            <h2>Digital Footprint Analysis</h2>
+            <div class="exposure-grid">
+                <div class="exposure-metric">
+                    <h3>Dark Web Mentions</h3>
+                    <div class="metric-value">16</div>
+                    <p>Last detected: 2 days ago</p>
+                </div>
+                <div class="exposure-metric">
+                    <h3>Compromised Services</h3>
+                    <div class="metric-value">4</div>
+                    <p>Active subscriptions affected</p>
+                </div>
+                <div class="exposure-metric">
+                    <h3>Risk Vector Score</h3>
+                    <div class="metric-value">8.7</div>
+                    <p>High exposure probability</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-footer">
+            <p>Report Hash: <span id="reportHash"></span></p>
+            <p>Verification Status: AUTHENTICATED</p>
+        </div>
+    </div>
+
+    <script>
+        // Real-time updates
+        function updateTimestamp() {
+            const now = new Date();
+            const utc = now.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+            document.getElementById('timestamp').textContent = utc;
+        }
+
+        // Generate unique report hash
+        function generateReportHash() {
+            return Array.from(crypto.getRandomValues(new Uint8Array(8)))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('')
+                .toUpperCase();
+        }
+
+        // Generate case ID
+        function generateCaseId() {
+            const timestamp = Date.now().toString(36).toUpperCase();
+            const random = Math.random().toString(36).substr(2, 5).toUpperCase();
+            return `DIB-${timestamp}-${random}`;
+        }
+
+        // Initialize and update
+        document.getElementById('reportHash').textContent = generateReportHash();
+        document.getElementById('caseId').textContent = generateCaseId();
+        updateTimestamp();
+        setInterval(updateTimestamp, 1000);
+    </script>
+</body>
+</html>

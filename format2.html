@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Intelligence Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0e17;
+            --secondary-dark: #1a1f2e;
+            --accent-blue: #007bff;
+            --accent-red: #dc3545;
+            --accent-green: #28a745;
+            --text-primary: #e2e2e2;
+            --text-secondary: #8b8b8b;
+            --border-color: #2a2f3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--secondary-dark);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .report-header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .timestamp {
+            font-family: 'Courier New', monospace;
+            color: var(--accent-blue);
+            font-size: 0.9em;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .data-card {
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .data-content {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .data-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            margin-bottom: 8px;
+        }
+
+        .data-label {
+            color: var(--text-secondary);
+        }
+
+        .data-value {
+            color: var(--text-primary);
+        }
+
+        .risk-indicator {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .risk-high {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #ff4444;
+        }
+
+        .risk-medium {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .risk-low {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-dark);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            border-left: 2px solid var(--accent-blue);
+        }
+
+        .timeline-date {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+
+        .timeline-content {
+            margin-top: 5px;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .data-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="report-header">
+                <div>
+                    <h1>OSINT Intelligence Report</h1>
+                    <div class="timestamp">
+                        <i class="fas fa-clock"></i> Generated: <span id="currentTimestamp"></span>
+                    </div>
+                </div>
+                <div class="report-meta">
+                    <span class="risk-indicator risk-high">Confidential</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="data-card">
+                <div class="data-header">
+                    <span class="data-title">Subject Information</span>
+                    <span class="risk-indicator risk-medium">Medium Risk</span>
+                </div>
+                <div class="data-content">
+                    <div class="data-row">
+                        <span class="data-label">Case ID:</span>
+                        <span class="data-value" id="caseId"></span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Search Type:</span>
+                        <span class="data-value">Comprehensive OSINT</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Status:</span>
+                        <span class="data-value">Active Investigation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="data-header">
+                    <span class="data-title">Digital Footprint</span>
+                </div>
+                <div class="data-content" id="digitalFootprint">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="data-header">
+                    <span class="data-title">Risk Analysis</span>
+                </div>
+                <div class="data-grid" id="riskAnalysis">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <h3>Investigation Timeline</h3>
+            <div id="timelineContent">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-file-pdf"></i> Export PDF
+            </button>
+            <button class="btn btn-secondary">
+                <i class="fas fa-save"></i> Save Report
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Generate unique case ID
+        document.getElementById('caseId').textContent = 'OSI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+        // Set current timestamp
+        document.getElementById('currentTimestamp').textContent = new Date().toUTCString();
+
+        // Sample digital footprint data
+        const digitalFootprintData = [
+            { label: 'Known Aliases', value: '3 identified' },
+            { label: 'Email Addresses', value: '5 associated' },
+            { label: 'Phone Numbers', value: '2 verified' },
+            { label: 'Social Profiles', value: '7 active' }
+        ];
+
+        const digitalFootprintElement = document.getElementById('digitalFootprint');
+        digitalFootprintData.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'data-row';
+            row.innerHTML = `
+                <span class="data-label">${item.label}:</span>
+                <span class="data-value">${item.value}</span>
+            `;
+            digitalFootprintElement.appendChild(row);
+        });
+
+        // Sample risk analysis data
+        const riskFactors = [
+            { factor: 'Digital Exposure', level: 'High' },
+            { factor: 'Data Breaches', level: 'Medium' },
+            { factor: 'Dark Web Presence', level: 'Low' },
+            { factor: 'Social Engineering Risk', level: 'Medium' }
+        ];
+
+        const riskAnalysisElement = document.getElementById('riskAnalysis');
+        riskFactors.forEach(factor => {
+            const item = document.createElement('div');
+            item.className = 'data-item';
+            item.innerHTML = `
+                <div>${factor.factor}</div>
+                <span class="risk-indicator risk-${factor.level.toLowerCase()}">${factor.level}</span>
+            `;
+            riskAnalysisElement.appendChild(item);
+        });
+
+        // Sample timeline data
+        const timelineData = [
+            { date: '2024-01-15', event: 'Initial OSINT scan initiated' },
+            { date: '2024-01-16', event: 'Digital footprint analysis completed' },
+            { date: '2024-01-17', event: 'Associated accounts identified' },
+            { date: '2024-01-18', event: 'Risk assessment completed' }
+        ];
+
+        const timelineElement = document.getElementById('timelineContent');
+        timelineData.forEach(item => {
+            const timelineItem = document.createElement('div');
+            timelineItem.className = 'timeline-item';
+            timelineItem.innerHTML = `
+                <div class="timeline-date">${item.date}</div>
+                <div class="timeline-content">${item.event}</div>
+            `;
+            timelineElement.appendChild(timelineItem);
+        });
+    </script>
+</body>
+</html>

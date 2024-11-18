@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Intelligence Report</title>
+    <style>
+        :root {
+            --dark-bg: #0a0d14;
+            --darker-bg: #050709;
+            --accent: #00ff8c;
+            --accent-dark: #00cc6f;
+            --danger: #ff3e3e;
+            --warning: #ffa500;
+            --info: #007bff;
+            --text: #e0e0e0;
+            --text-secondary: #8a8a8a;
+            --border: #1a1f2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            background-color: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            background-color: var(--darker-bg);
+            border-bottom: 2px solid var(--accent);
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .timestamp {
+            color: var(--accent);
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1rem;
+        }
+
+        .sidebar {
+            background-color: var(--darker-bg);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .main-content {
+            background-color: var(--darker-bg);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .data-panel {
+            background-color: rgba(0, 255, 140, 0.05);
+            border: 1px solid var(--accent-dark);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .exposure-item {
+            background-color: rgba(255, 62, 62, 0.05);
+            border: 1px solid var(--danger);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .data-label {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .data-value {
+            font-family: 'Consolas', monospace;
+            background-color: var(--darker-bg);
+            padding: 0.5rem;
+            border-radius: 2px;
+            word-break: break-all;
+        }
+
+        .severity-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .severity-critical {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .severity-high {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        .severity-medium {
+            background-color: var(--warning);
+            color: black;
+        }
+
+        .severity-low {
+            background-color: var(--info);
+            color: white;
+        }
+
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .meta-table th,
+        .meta-table td {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .meta-table th {
+            background-color: rgba(0, 255, 140, 0.05);
+            color: var(--accent);
+        }
+
+        .hash-value {
+            font-family: 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--darker-bg);
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: var(--accent-dark);
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+
+            .grid-container {
+                display: block;
+            }
+
+            .download-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OSINT Intelligence Report</h1>
+            <div class="timestamp" id="currentTimestamp"></div>
+        </div>
+
+        <div class="grid-container">
+            <div class="sidebar">
+                <h3>Report Information</h3>
+                <div class="data-panel">
+                    <div class="data-label">Report ID</div>
+                    <div class="data-value" id="reportId"></div>
+                    
+                    <div class="data-label">Classification</div>
+                    <div class="data-value">CONFIDENTIAL</div>
+                    
+                    <div class="data-label">Analysis Type</div>
+                    <div class="data-value">Digital Exposure Assessment</div>
+                </div>
+
+                <h3>Risk Summary</h3>
+                <div class="data-panel">
+                    <div class="data-label">Overall Risk Level</div>
+                    <span class="severity-indicator severity-critical">CRITICAL</span>
+                    
+                    <div class="data-label">Exposure Score</div>
+                    <div class="data-value">8.9/10</div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <h2>Exposure Analysis</h2>
+                
+                <div class="exposure-item">
+                    <h3>Digital Identity Exposure</h3>
+                    <table class="meta-table">
+                        <tr>
+                            <th>Data Type</th>
+                            <th>Status</th>
+                            <th>Source Count</th>
+                            <th>Last Seen</th>
+                        </tr>
+                        <tr>
+                            <td>Email Address</td>
+                            <td><span class="severity-indicator severity-critical">EXPOSED</span></td>
+                            <td>3 sources</td>
+                            <td>2024-01-15</td>
+                        </tr>
+                        <tr>
+                            <td>Password Hash</td>
+                            <td><span class="severity-indicator severity-high">EXPOSED</span></td>
+                            <td>2 sources</td>
+                            <td>2024-01-10</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="exposure-item">
+                    <h3>Credential Details</h3>
+                    <div class="data-label">Associated Email</div>
+                    <div class="data-value">[REDACTED]@example.com</div>
+                    
+                    <div class="data-label">Password Hash</div>
+                    <div class="data-value hash-value">5f4dcc3b5aa765d61d8327deb882cf99</div>
+                    
+                    <div class="data-label">Hash Type</div>
+                    <div class="data-value">MD5</div>
+                </div>
+
+                <div class="exposure-item">
+                    <h3>Personal Information Exposure</h3>
+                    <table class="meta-table">
+                        <tr>
+                            <th>Information Type</th>
+                            <th>Status</th>
+                            <th>Last Modified</th>
+                        </tr>
+                        <tr>
+                            <td>Phone Number</td>
+                            <td><span class="severity-indicator severity-medium">PARTIAL</span></td>
+                            <td>2024-01-01</td>
+                        </tr>
+                        <tr>
+                            <td>Physical Address</td>
+                            <td><span class="severity-indicator severity-low">PROTECTED</span></td>
+                            <td>N/A</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="exposure-item">
+                    <h3>Digital Footprint</h3>
+                    <div class="data-label">Associated Domains</div>
+                    <div class="data-value">example.com, subdomain.example.com</div>
+                    
+                    <div class="data-label">Connected Services</div>
+                    <div class="data-value">Service1, Service2, Service3</div>
+                </div>
+
+                <div class="data-panel">
+                    <h3>Remediation Recommendations</h3>
+                    <ul>
+                        <li>Immediately change passwords on affected accounts</li>
+                        <li>Enable Two-Factor Authentication where available</li>
+                        <li>Monitor credit reports for suspicious activity</li>
+                        <li>Review and secure connected service accounts</li>
+                    </ul>
+                </div>
+
+                <a href="#" onclick="window.print()" class="download-btn">Export Report as PDF</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate random report ID
+        document.getElementById('reportId').textContent = 'OSR-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        
+        // Set current UTC timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('currentTimestamp').textContent = 
+                `UTC: ${now.toISOString().replace('T', ' ').substr(0, 19)}`;
+        }
+        updateTimestamp();
+        setInterval(updateTimestamp, 1000);
+    </script>
+</body>
+</html>

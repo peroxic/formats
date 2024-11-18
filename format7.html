@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Intelligence Report</title>
+    <style>
+        :root {
+            --primary: #120458;
+            --secondary: #1B0B40;
+            --accent: #2E0B8C;
+            --highlight: #3411B5;
+            --dark-bg: #0A0A14;
+            --darker-bg: #050510;
+            --text: #E6E6FF;
+            --muted: #8988B3;
+            --border: #1E1E3A;
+            --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+            --card-bg: rgba(30, 30, 58, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .report-header {
+            background: var(--gradient);
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .report-meta {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .intel-summary {
+            background: var(--darker-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .insight-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .risk-level {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .critical { background: #FF2D55; }
+        .high { background: #FF9500; }
+        .medium { background: #FFCC00; }
+        .low { background: #34C759; }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            background: var(--darker-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--secondary);
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .exposure-timeline {
+            position: relative;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .timeline-event {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 2px solid var(--accent);
+        }
+
+        .exposure-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-box {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0.5rem 0;
+        }
+
+        .section-title {
+            color: var(--text);
+            margin: 2rem 0 1rem;
+            font-weight: 500;
+        }
+
+        .detail-list {
+            list-style: none;
+        }
+
+        .detail-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .verification-seal {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-header">
+            <div class="report-meta">
+                <div>
+                    <h1>Digital Exposure Analysis</h1>
+                    <p>Reference: DEA-2024-11-15-0047</p>
+                </div>
+                <div>
+                    <p>Classification: Restricted</p>
+                    <p>Generated: 2024-11-15 19:25 UTC</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="intel-summary">
+            <h2>Executive Summary</h2>
+            <p>Comprehensive analysis of digital exposure across monitored networks and datasets reveals significant findings requiring immediate attention.</p>
+        </div>
+
+        <div class="exposure-metrics">
+            <div class="metric-box">
+                <h3>Risk Score</h3>
+                <div class="metric-value">76/100</div>
+                <p>High Risk Classification</p>
+            </div>
+            <div class="metric-box">
+                <h3>Exposed Records</h3>
+                <div class="metric-value">317</div>
+                <p>Verified Data Points</p>
+            </div>
+            <div class="metric-box">
+                <h3>Breach Events</h3>
+                <div class="metric-value">4</div>
+                <p>Distinct Incidents</p>
+            </div>
+        </div>
+
+        <section class="data-section">
+            <h2 class="section-title">Exposure Analysis</h2>
+            <div class="data-grid">
+                <div class="insight-card">
+                    <h3>Primary Findings</h3>
+                    <div class="risk-indicator">
+                        <span class="risk-level critical"></span>
+                        <span>Critical: Credentials Exposed</span>
+                    </div>
+                    <div class="risk-indicator">
+                        <span class="risk-level high"></span>
+                        <span>High: Personal Identifiers</span>
+                    </div>
+                    <div class="risk-indicator">
+                        <span class="risk-level medium"></span>
+                        <span>Medium: Associated Accounts</span>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3>Impact Assessment</h3>
+                    <ul class="detail-list">
+                        <li>Credential Compromise: High</li>
+                        <li>Identity Risk: Elevated</li>
+                        <li>Financial Exposure: Moderate</li>
+                    </ul>
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data Category</th>
+                        <th>Status</th>
+                        <th>Source Type</th>
+                        <th>Verification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Email Credentials</td>
+                        <td>Exposed</td>
+                        <td>Dark Web Forum</td>
+                        <td>Verified</td>
+                    </tr>
+                    <tr>
+                        <td>Personal Information</td>
+                        <td>Partial</td>
+                        <td>Data Breach</td>
+                        <td>Confirmed</td>
+                    </tr>
+                    <tr>
+                        <td>Financial Records</td>
+                        <td>Potential</td>
+                        <td>Underground Market</td>
+                        <td>Investigating</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="exposure-timeline">
+            <h2 class="section-title">Exposure Chronology</h2>
+            <div class="timeline-event">
+                <h4>Initial Detection</h4>
+                <p>First identified in secure dataset [REDACTED]</p>
+            </div>
+            <div class="timeline-event">
+                <h4>Verification Phase</h4>
+                <p>Cross-referenced across multiple sources</p>
+            </div>
+            <div class="timeline-event">
+                <h4>Latest Activity</h4>
+                <p>Recent circulation in verified channels</p>
+            </div>
+        </div>
+
+        <div class="verification-seal">
+            <p>Digital Verification Seal</p>
+            <p>Report ID: DEA-2024-11-15-0047</p>
+            <p>Validation Hash: 847AFC3E912D</p>
+        </div>
+    </div>
+</body>
+</html>

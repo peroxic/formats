@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Assessment Report</title>
+    <style>
+        :root {
+            --dark-bg: #1a1a1a;
+            --darker-bg: #0d0d0d;
+            --accent: #2962ff;
+            --text: #e0e0e0;
+            --secondary-text: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--darker-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 150px;
+            margin-bottom: 1rem;
+        }
+
+        h1, h2, h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .report-meta {
+            background-color: rgba(41, 98, 255, 0.1);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+        }
+
+        .report-section {
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .severity-high {
+            color: #ff4444;
+        }
+
+        .severity-medium {
+            color: #ffbb33;
+        }
+
+        .severity-low {
+            color: #00C851;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #1a53ff;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .download-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Security Assessment Report</h1>
+            <p>Confidential Document</p>
+        </div>
+
+        <div class="report-meta">
+            <p><strong>Report ID:</strong> <span id="reportId"></span></p>
+            <p><strong>Date Generated:</strong> <span id="reportDate"></span></p>
+            <p><strong>Classification:</strong> Confidential</p>
+        </div>
+
+        <div class="report-section">
+            <h2>Executive Summary</h2>
+            <p>This report contains findings from a security assessment conducted in accordance with industry standards and best practices.</p>
+        </div>
+
+        <div class="report-section">
+            <h2>Findings Overview</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Finding</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="findingsTable">
+                    <!-- Findings will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="report-section">
+            <h2>Recommendations</h2>
+            <ul id="recommendationsList">
+                <!-- Recommendations will be populated here -->
+            </ul>
+        </div>
+
+        <a href="#" onclick="window.print()" class="download-btn">Download PDF</a>
+    </div>
+
+    <script>
+        // Generate random report ID
+        document.getElementById('reportId').textContent = 'RPT-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        
+        // Set current date
+        document.getElementById('reportDate').textContent = new Date().toLocaleDateString();
+        
+        // Example data population
+        const findings = [
+            { id: 1, finding: "Example Finding 1", severity: "High", status: "Open" },
+            { id: 2, finding: "Example Finding 2", severity: "Medium", status: "In Progress" },
+            { id: 3, finding: "Example Finding 3", severity: "Low", status: "Closed" }
+        ];
+
+        const findingsTable = document.getElementById('findingsTable');
+        findings.forEach(finding => {
+            const row = findingsTable.insertRow();
+            row.innerHTML = `
+                <td>${finding.id}</td>
+                <td>${finding.finding}</td>
+                <td class="severity-${finding.severity.toLowerCase()}">${finding.severity}</td>
+                <td>${finding.status}</td>
+            `;
+        });
+    </script>
+</body>
+</html>

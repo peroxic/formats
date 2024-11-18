@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Intelligence Report</title>
+    <style>
+        :root {
+            --primary: #7B2BF9;
+            --secondary: #4A154B;
+            --accent: #9D5CFF;
+            --dark-bg: #0D0D14;
+            --darker-bg: #08080F;
+            --text: #E2E2E2;
+            --muted: #8A8A8A;
+            --border: #2A2A3A;
+            --card-bg: rgba(123, 43, 249, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background-color: var(--darker-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+        }
+
+        .timestamp {
+            font-family: 'Consolas', monospace;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            background: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+            color: var(--accent);
+            display: inline-block;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .data-card {
+            background: var(--darker-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .exposure-details {
+            margin-top: 2rem;
+        }
+
+        .exposure-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--darker-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .exposure-table th,
+        .exposure-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .exposure-table th {
+            background: var(--secondary);
+            color: var(--text);
+        }
+
+        .severity-critical {
+            color: #FF3E3E;
+        }
+
+        .severity-high {
+            color: #FF7842;
+        }
+
+        .severity-medium {
+            color: #FFB800;
+        }
+
+        .data-source {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-top: 0.5rem;
+        }
+
+        .breach-timeline {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        .timeline-item {
+            padding: 1rem;
+            border-left: 2px solid var(--primary);
+            margin: 1rem 0;
+        }
+
+        .fingerprint {
+            font-family: 'Consolas', monospace;
+            color: var(--accent);
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--darker-bg);
+            border-radius: 4px;
+        }
+
+        .metrics-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            color: var(--accent);
+            margin: 0.5rem 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div>
+                    <h1>Digital Exposure Report</h1>
+                    <p class="timestamp" id="currentTimestamp">UTC: 2024-11-15 19:20:01</p>
+                    <span class="status-badge">Confidential Intelligence Report</span>
+                </div>
+                <div>
+                    <p>Report ID: OSI-<span id="reportId"></span></p>
+                    <p>Classification: Restricted</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-panel">
+            <div class="metric-card">
+                <h3>Exposure Score</h3>
+                <div class="metric-value">8.7</div>
+                <p>Critical Risk Level</p>
+            </div>
+            <div class="metric-card">
+                <h3>Data Points</h3>
+                <div class="metric-value">142</div>
+                <p>Discovered Elements</p>
+            </div>
+            <div class="metric-card">
+                <h3>First Seen</h3>
+                <div class="metric-value">2023</div>
+                <p>Initial Detection</p>
+            </div>
+        </div>
+
+        <div class="exposure-details">
+            <h2>Exposed Information Analysis</h2>
+            <table class="exposure-table">
+                <thead>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Status</th>
+                        <th>Exposure Level</th>
+                        <th>Last Verified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Credentials</td>
+                        <td>CONFIRMED</td>
+                        <td class="severity-critical">CRITICAL</td>
+                        <td>2024-11-14</td>
+                    </tr>
+                    <tr>
+                        <td>Personal Identifiers</td>
+                        <td>VERIFIED</td>
+                        <td class="severity-high">HIGH</td>
+                        <td>2024-11-13</td>
+                    </tr>
+                    <tr>
+                        <td>Financial Data</td>
+                        <td>POTENTIAL</td>
+                        <td class="severity-medium">MEDIUM</td>
+                        <td>2024-11-12</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="breach-timeline">
+            <h2>Exposure Timeline</h2>
+            <div class="timeline-item">
+                <h3>Initial Detection</h3>
+                <p>First appearance in dataset ABC-123</p>
+                <p class="data-source">Source: [REDACTED] Underground Forum</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Secondary Verification</h3>
+                <p>Credentials verified in multiple databases</p>
+                <p class="data-source">Source: Composite Analysis</p>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="data-card">
+                <h3>Digital Footprint</h3>
+                <ul>
+                    <li>Email Addresses: [REDACTED]</li>
+                    <li>Username Variations: 3</li>
+                    <li>Connected Profiles: 7</li>
+                </ul>
+            </div>
+            <div class="data-card">
+                <h3>Risk Assessment</h3>
+                <ul>
+                    <li>Credential Reuse: High</li>
+                    <li>Password Strength: Moderate</li>
+                    <li>2FA Status: Not Detected</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="fingerprint">
+            Report Hash: 7B2BF9-4A154B-9D5CFF
+            Investigator ID: [REDACTED]
+            Verification Status: AUTHENTICATED
+        </div>
+    </div>
+
+    <script>
+        // Generate report ID
+        document.getElementById('reportId').textContent = 
+            Date.now().toString(36).toUpperCase() + 
+            Math.random().toString(36).substr(2, 5).toUpperCase();
+
+        // Update timestamp
+        document.getElementById('currentTimestamp').textContent = 
+            'UTC: ' + new Date().toISOString().replace('T', ' ').substr(0, 19);
+    </script>
+</body>
+</html>

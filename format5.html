@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Intelligence Report</title>
+    <style>
+        /* Theme Variables */
+        .theme-cyber {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111;
+            --accent: #00ff00;
+            --text: #e0e0e0;
+            --alert: #ff3e3e;
+            --warning: #ffae00;
+            --safe: #00ff95;
+            --grid: #1a1a1a;
+        }
+
+        .theme-professional {
+            --primary-bg: #1a1a1a;
+            --secondary-bg: #222;
+            --accent: #007bff;
+            --text: #ffffff;
+            --alert: #dc3545;
+            --warning: #ffc107;
+            --safe: #28a745;
+            --grid: #2d2d2d;
+        }
+
+        .theme-matrix {
+            --primary-bg: #000000;
+            --secondary-bg: #0a0a0a;
+            --accent: #08ff00;
+            --text: #00ff95;
+            --alert: #ff0000;
+            --warning: #ffff00;
+            --safe: #00ff00;
+            --grid: #0f1f0f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 1rem;
+        }
+
+        .header-info {
+            text-align: right;
+        }
+
+        .terminal-window {
+            background: var(--secondary-bg);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .data-card {
+            background: var(--secondary-bg);
+            border: 1px solid var(--grid);
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        .exposure-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .exposure-table th,
+        .exposure-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--grid);
+        }
+
+        .exposure-table th {
+            background: var(--secondary-bg);
+            color: var(--accent);
+        }
+
+        .status-high {
+            color: var(--alert);
+        }
+
+        .status-medium {
+            color: var(--warning);
+        }
+
+        .status-low {
+            color: var(--safe);
+        }
+
+        .intel-section {
+            background: var(--secondary-bg);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 3px solid var(--accent);
+        }
+
+        .timestamp {
+            color: var(--accent);
+            font-size: 0.9em;
+        }
+
+        .hash-display {
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .alert-box {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid var(--alert);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        /* Animation Effects */
+        @keyframes scanline {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .scanline {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scanline::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 0, 0.1);
+            animation: scanline 2s linear infinite;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .scanline::after {
+                display: none;
+            }
+            
+            .terminal-window {
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body class="theme-cyber">
+    <div class="container">
+        <div class="header scanline">
+            <div>
+                <h1>OSINT Intelligence Report</h1>
+                <p class="timestamp">Generated: <span id="currentTimestamp"></span></p>
+            </div>
+            <div class="header-info">
+                <p>Report ID: <span id="reportId"></span></p>
+                <p>Classification: CONFIDENTIAL</p>
+                <p>Analyst: <span id="analystId">REDACTED</span></p>
+            </div>
+        </div>
+
+        <div class="terminal-window">
+            <p class="blink">[ INITIATING SCAN SEQUENCE ]</p>
+            <p>Target Analysis Complete</p>
+            <p>Identified Exposures: <span class="status-high">12</span></p>
+            <p>Last Updated: <span id="lastUpdate"></span></p>
+        </div>
+
+        <div class="intel-section">
+            <h2>Subject Overview</h2>
+            <div class="data-grid">
+                <div class="data-card">
+                    <h3>Digital Footprint</h3>
+                    <p>Primary Email: <span class="status-high">[REDACTED]@example.com</span></p>
+                    <p>Associated IPs: <span class="status-medium">2</span> identified</p>
+                    <p>Domains: <span class="status-medium">3</span> associated</p>
+                </div>
+                <div class="data-card">
+                    <h3>Breach Status</h3>
+                    <p>Total Breaches: <span class="status-high">4</span></p>
+                    <p>Last Breach: <span class="status-medium">2024-01-15</span></p>
+                    <p>Risk Level: <span class="status-high">CRITICAL</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="intel-section">
+            <h2>Exposed Information</h2>
+            <table class="exposure-table">
+                <thead>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Status</th>
+                        <th>Source</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Email Credentials</td>
+                        <td class="status-high">EXPOSED</td>
+                        <td>[REDACTED]</td>
+                        <td>2024-01-15</td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number</td>
+                        <td class="status-medium">PARTIAL</td>
+                        <td>[REDACTED]</td>
+                        <td>2023-12-20</td>
+                    </tr>
+                    <tr>
+                        <td>Physical Address</td>
+                        <td class="status-low">PROTECTED</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="intel-section">
+            <h2>Digital Hash Signatures</h2>
+            <div class="hash-display">
+                <p>SHA-256: <span class="status-medium">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span></p>
+                <p>MD5: <span class="status-medium">d41d8cd98f00b204e9800998ecf8427e</span></p>
+            </div>
+        </div>
+
+        <div class="alert-box">
+            <h3>Security Advisory</h3>
+            <p>This report contains sensitive information. Handle according to security protocols.</p>
+            <p>Report generated for authorized security research only.</p>
+        </div>
+    </div>
+
+    <script>
+        // Generate random report ID
+        document.getElementById('reportId').textContent = 'OSI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        
+        // Set timestamps
+        const now = new Date();
+        document.getElementById('currentTimestamp').textContent = now.toISOString();
+        document.getElementById('lastUpdate').textContent = now.toLocaleString();
+
+        // Theme Switcher Function
+        function switchTheme(themeName) {
+            document.body.className = `theme-${themeName}`;
+        }
+
+        // Optional theme switching (can be triggered by buttons or user preference)
+        // switchTheme('professional');
+        // switchTheme('matrix');
+        // switchTheme('cyber');
+    </script>
+</body>
+</html>
